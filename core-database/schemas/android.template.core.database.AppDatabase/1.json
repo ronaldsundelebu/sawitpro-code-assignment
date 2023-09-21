@@ -2,21 +2,45 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8bebd6aab64557ab1de14693ec7b4103",
+    "identityHash": "0fe1f348f7ca865f84822e50876d0fe5",
     "entities": [
       {
         "tableName": "MyModel",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `licenseNumber` TEXT NOT NULL, `driverName` TEXT NOT NULL, `inWeight` INTEGER NOT NULL, `outWeight` INTEGER NOT NULL)",
         "fields": [
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "licenseNumber",
+            "columnName": "licenseNumber",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "uid",
-            "columnName": "uid",
+            "fieldPath": "driverName",
+            "columnName": "driverName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inWeight",
+            "columnName": "inWeight",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "outWeight",
+            "columnName": "outWeight",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -24,7 +48,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "uid"
+            "id"
           ]
         },
         "indices": [],
@@ -34,7 +58,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8bebd6aab64557ab1de14693ec7b4103')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0fe1f348f7ca865f84822e50876d0fe5')"
     ]
   }
 }

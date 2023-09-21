@@ -18,9 +18,9 @@ package android.template.feature.weighbridge.ui
 
 import android.template.core.data.model.TicketData
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Before
 import org.junit.Rule
@@ -28,10 +28,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * UI tests for [MyModelScreen].
+ * UI tests for [WeighbridgeListScreenTest].
  */
 @RunWith(AndroidJUnit4::class)
-class MyModelScreenTest {
+class WeighbridgeListScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -39,40 +39,34 @@ class MyModelScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            MyModelScreen(
-                ticket = TicketData(),
-                onSaveClick = { /*...*/ },
+            WeightBridgeListScreen(
+                items = listOf(
+                    TicketData(licenseNumber = "123", driverName = "test1"),
+                    TicketData(licenseNumber = "123", driverName = "test2"),
+                    TicketData(licenseNumber = "123", driverName = "test3"),
+                    TicketData(licenseNumber = "123", driverName = "test4"),
+                    TicketData(licenseNumber = "123", driverName = "test5"),
+                ),
+                onAddTicketClick = { /*...*/ },
+                onEditTicketClick = { /*...*/ },
+                onFilterChanged = { _, _ ->  /*...*/ },
             )
         }
     }
 
     @Test
-    fun check_if_inbound_time_exist() {
-        composeTestRule.onNodeWithText("Inbound Time").assertExists().performClick()
+    fun check_if_component_edit_exist() {
+        composeTestRule.onAllNodesWithContentDescription("edit").assertCountEquals(5)
     }
 
     @Test
-    fun check_if_license_number_exist() {
-        composeTestRule.onNodeWithText("License Number").assertExists().performClick()
+    fun check_if_component_add_exist() {
+        composeTestRule.onAllNodesWithContentDescription("add").assertCountEquals(1)
     }
 
     @Test
-    fun check_if_driver_name_exist() {
-        composeTestRule.onNodeWithText("Driver Name").assertExists().performClick()
+    fun check_if_component_sort_exist() {
+        composeTestRule.onAllNodesWithContentDescription("sort").assertCountEquals(1)
     }
 
-    @Test
-    fun check_if_inbound_weight_exist() {
-        composeTestRule.onNodeWithText("Inbound Weight").assertExists().performClick()
-    }
-
-    @Test
-    fun check_if_outbound_weight_exist() {
-        composeTestRule.onNodeWithText("Outbound Weight").assertExists().performClick()
-    }
-
-    @Test
-    fun check_if_net_weight_exist() {
-        composeTestRule.onNodeWithText("Net Weight").assertExists().performClick()
-    }
 }

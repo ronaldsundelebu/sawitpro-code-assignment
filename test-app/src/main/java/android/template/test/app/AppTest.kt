@@ -22,8 +22,9 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 import org.junit.Test
-import android.template.core.data.di.fakeMyModels
 import android.template.ui.MainActivity
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.performClick
 
 @HiltAndroidTest
 class AppTest {
@@ -35,8 +36,8 @@ class AppTest {
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     @Test
-    fun test1() {
-        // TODO: Add navigation tests
-        composeTestRule.onNodeWithText(fakeMyModels.first(), substring = true).assertExists()
+    fun test_navigation() {
+        composeTestRule.onNodeWithContentDescription("add").assertExists().performClick()
+        composeTestRule.onNodeWithText("Inbound Time").assertExists()
     }
 }

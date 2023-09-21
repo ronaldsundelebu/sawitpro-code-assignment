@@ -29,8 +29,8 @@ import android.template.core.data.di.FakeMyModelRepository
     components = [SingletonComponent::class],
     replaces = [DataModule::class]
 )
-interface FakeDataModule {
 
+interface FakeDataModule {
     @Binds
     abstract fun bindRepository(
         fakeRepository: FakeMyModelRepository

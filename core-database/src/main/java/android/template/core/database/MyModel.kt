@@ -21,21 +21,30 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
+import androidx.room.Update
 
 @Entity
 data class MyModel(
-    val name: String
-) {
     @PrimaryKey(autoGenerate = true)
-    var uid: Int = 0
-}
+    val id: Int = 0,
+    val timestamp: Long,
+    val licenseNumber: String,
+    val driverName: String,
+    val inWeight: Int,
+    val outWeight: Int,
+)
 
 @Dao
 interface MyModelDao {
-    @Query("SELECT * FROM mymodel ORDER BY uid DESC LIMIT 10")
-    fun getMyModels(): Flow<List<MyModel>>
+    @Query("SELECT * FROM mymodel ORDER BY timestamp DESC")
+    suspend fun getMyModels(): List<MyModel>
+
+    @Query("SELECT * FROM mymodel WHERE id = :id")
+    suspend fun findMyModel(id: Int): MyModel?
 
     @Insert
     suspend fun insertMyModel(item: MyModel)
+
+    @Update
+    suspend fun updateMyModel(item: MyModel)
 }

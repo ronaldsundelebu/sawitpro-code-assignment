@@ -16,26 +16,73 @@
 
 package android.template.core.data
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import android.template.core.data.model.TicketData
 import android.template.core.database.MyModel
 import android.template.core.database.MyModelDao
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface MyModelRepository {
-    val myModels: Flow<List<String>>
+    suspend fun getMyModels(): List<TicketData>
 
-    suspend fun add(name: String)
+    suspend fun findMyModel(id: Int): TicketData
+
+    suspend fun add(ticket: TicketData)
+
+    suspend fun update(ticket: TicketData)
 }
 
 class DefaultMyModelRepository @Inject constructor(
     private val myModelDao: MyModelDao
 ) : MyModelRepository {
 
-    override val myModels: Flow<List<String>> =
-        myModelDao.getMyModels().map { items -> items.map { it.name } }
+    override suspend fun getMyModels(): List<TicketData> =
+        myModelDao.getMyModels().map {
+            TicketData(
+                id = it.id,
+                timestamp = it.timestamp,
+                licenseNumber = it.licenseNumber,
+                driverName = it.driverName,
+                inWeight = it.inWeight,
+                outWeight = it.outWeight
+            )
+        }
 
-    override suspend fun add(name: String) {
-        myModelDao.insertMyModel(MyModel(name = name))
+    override suspend fun findMyModel(id: Int): TicketData {
+        val result = myModelDao.findMyModel(id)
+            ?: return TicketData()
+        return TicketData(
+            id = result.id,
+            timestamp = result.timestamp,
+            licenseNumber = result.licenseNumber,
+            driverName = result.driverName,
+            inWeight = result.inWeight,
+            outWeight = result.outWeight
+        )
+    }
+
+    override suspend fun add(ticket: TicketData) {
+        myModelDao.insertMyModel(
+            MyModel(
+                timestamp = ticket.timestamp,
+                licenseNumber = ticket.licenseNumber,
+                driverName = ticket.driverName,
+                inWeight = ticket.inWeight,
+                outWeight = ticket.outWeight,
+            )
+        )
+    }
+
+    override suspend fun update(ticket: TicketData) {
+        myModelDao.updateMyModel(
+            MyModel(
+                id = ticket.id,
+                timestamp = ticket.timestamp,
+                licenseNumber = ticket.licenseNumber,
+                driverName = ticket.driverName,
+                inWeight = ticket.inWeight,
+                outWeight = ticket.outWeight,
+            )
+        )
     }
 }

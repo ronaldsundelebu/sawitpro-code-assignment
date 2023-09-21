@@ -24,6 +24,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import android.template.core.data.MyModelRepository
 import android.template.core.data.DefaultMyModelRepository
+import android.template.core.data.model.TicketData
+import android.template.core.database.MyModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,11 +41,17 @@ interface DataModule {
 }
 
 class FakeMyModelRepository @Inject constructor() : MyModelRepository {
-    override val myModels: Flow<List<String>> = flowOf(fakeMyModels)
+    override suspend fun getMyModels(): List<TicketData> = fakeMyModels
 
-    override suspend fun add(name: String) {
+    override suspend fun findMyModel(id: Int): TicketData = TicketData()
+
+    override suspend fun add(ticket: TicketData) {
+        throw NotImplementedError()
+    }
+
+    override suspend fun update(ticket: TicketData) {
         throw NotImplementedError()
     }
 }
 
-val fakeMyModels = listOf("One", "Two", "Three")
+val fakeMyModels = emptyList<TicketData>()
